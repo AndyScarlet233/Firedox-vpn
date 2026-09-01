@@ -1,0 +1,9 @@
+{
+  "name": "org.firefox_ip_protection.chrome_bridge",
+  "description": "Firefox IP Protection Native Messaging bridge (example)",
+  "path": "vpn_bridge_host.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://dlogjlmofifonkgbcnjalehpmkdmegnd/"
+  ]
+}

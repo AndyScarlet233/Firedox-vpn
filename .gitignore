@@ -1,0 +1,68 @@
+# DeepSeek Harness uploads and local archives
+.dsh-uploads/
+*.zip
+
+# Generated runtime, installers and platform artifacts
+runtime/
+**/runtime/
+*.exe
+*.dll
+*.pyd
+*.so
+*.dylib
+*.py[cod]
+__pycache__/
+.venv/
+venv/
+
+# Credentials, tokens and private configuration
+**/tokens/*
+!**/tokens/.gitkeep
+!**/tokens/*.example.json
+!**/tokens/*.example.txt
+*.jwt
+*.pem
+*.key
+*credentials*.json
+*session_token*
+*account_meta.json
+*.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Runtime state, network snapshots and logs
+*.log
+install-repair.log
+system_python.txt
+node-latency-cache.json
+vpn-serverlist*.json
+port-map.json
+export/
+data/
+logs/
+
+# Local test/build/tool state
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+dist/
+.cache/
+
+# Captures and private reports
+screenshots/
+captures/
+login_screenshots/
+*.har
+*.trace
+*.bak
+*report*.html
+*report*.json
+
+# OS/editor state
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

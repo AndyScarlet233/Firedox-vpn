@@ -1,0 +1,48 @@
+name: Public source checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-source-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: Static source checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Audit public tree
+        run: python scripts/audit_public_tree.py
+
+      - name: Validate extension manifest
+        run: python -m json.tool extension/manifest.json >/dev/null
+
+      - name: Compile Python source
+        run: >-
+          python -m py_compile
+          scripts/audit_public_tree.py
+          host/native_host.py
+          vendor/firefox-ip-protection-pool/fcntl.py
+          vendor/firefox-ip-protection-pool/import_credentials.py
+          vendor/firefox-ip-protection-pool/ipp_pool.py
+          vendor/firefox-ip-protection-pool/refresh_state.py
+          vendor/firefox-ip-protection-pool/refresh_tokens.py
+          vendor/firefox-ip-protection-pool/renewal_credentials.py
+
+      - name: Check whitespace
+        run: git diff --check

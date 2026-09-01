@@ -1,8 +1,9 @@
 # Third-party notices
 
-This repository contains source code only. It does **not** include the private
-Python distribution, wheels, compiled extensions, PyInstaller output, or other
-runtime binaries from the working package.
+This repository contains source plus the small extension image assets needed
+for the unpacked extension. It does **not** include the private Python
+distribution, wheels, compiled extensions, PyInstaller output, or other runtime
+binaries from the working package.
 
 ## Upstream source
 

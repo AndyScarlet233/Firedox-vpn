@@ -13,7 +13,8 @@
     "privacy",
     "declarativeNetRequestWithHostAccess",
     "contentSettings",
-    "scripting"
+    "scripting",
+    "management"
   ],
   "background": {
     "service_worker": "background.js"

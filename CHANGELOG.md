@@ -3,7 +3,9 @@
 ## 1.0.0-public
 
 - Published a sanitized, source-first repository for the Chromium extension.
-- Kept the loadable `extension/` tree byte-identical to the working move-safe package.
+- Kept the loadable `extension/` tree and fixed extension ID from the working
+  move-safe package; added the declared `management` permission required by its
+  existing self-uninstall call.
 - Included the native bridge and the audited upstream source needed for review.
 - Excluded account credentials, JWTs, logs, caches, network snapshots, Python caches,
   prebuilt runtimes, platform binaries and the original upload archive.

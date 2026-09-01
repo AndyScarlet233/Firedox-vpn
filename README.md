@@ -2,7 +2,8 @@
 
 非官方的 Windows-first Chromium 浏览器扩展原型：通过本地 Native
 Messaging 桥接，在 Chromium 系浏览器中使用用户自己有资格使用的 Firefox
-IP Protection 服务，并提供按域名路由、WebRTC/DNS 防护和区域隐私设置。
+IP Protection 服务，并提供按域名路由、WebRTC 防泄漏、路由范围的 DNS 预解析
+防护和区域隐私设置。
 
 > **重要：这是源码公开仓库，不是包含个人登录状态的一键安装包。**
 > Firefox、Mozilla、Google、Fastly、Astral 及上游项目作者均未为本项目背书。
@@ -48,16 +49,18 @@ IP Protection 服务，并提供按域名路由、WebRTC/DNS 防护和区域隐�
 
 ## 数据流与高权限说明
 
-扩展需要 `proxy`、`nativeMessaging`、`privacy`、`contentSettings`、
-`scripting`、`activeTab`、`storage` 和 `<all_urls>` 权限。它会在用户启用
+扩展需要 `proxy`、`nativeMessaging`、`privacy`、
+`declarativeNetRequestWithHostAccess`、`contentSettings`、`scripting`、
+`activeTab`、`storage`、`management` 和 `<all_urls>` 权限。它会在用户启用
 时控制浏览器代理，并在可选的区域保护开启时对网页的语言、时区、定位与
 字体探测行为进行处理。内容脚本在 document start、all frames、主世界/隔离
 世界运行；这是高信任设计，安装前请自行审计。
 
 Native Host 只在本机处理 Firefox 登录状态，设计目标是不把原始 token 返回
 给扩展页面或 Chrome storage。网络访问依赖 Mozilla Firefox Account/Guardian、
-Firefox Remote Settings 和 Firefox IP Protection/Fastly 出口；这不是完整
-的匿名系统，也不实现 MASQUE/QUIC/UDP 全部数据面。
+Firefox Remote Settings 和 Firefox IP Protection/Fastly 出口池，可能在多个后端
+之间轮换；这不是完整的匿名系统。当前使用 Fastly-MASQUE 的 HTTPS CONNECT
+兼容路径，不提供本地 QUIC/UDP/MASQUE 数据面。
 
 详见 [`PRIVACY.md`](PRIVACY.md)、[`SECURITY.md`](SECURITY.md) 和
 [`THIRD_PARTY.md`](THIRD_PARTY.md)。

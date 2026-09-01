@@ -13,6 +13,7 @@ this is a high-trust browser component.
 | `contentSettings` | Block precise geolocation while region protection is active. |
 | `scripting` | Run the page diagnostic in the active HTTP(S) tab. |
 | `activeTab` | Read the active tab hostname for a site-specific route rule. |
+| `management` | Complete the user-confirmed self-uninstall flow. |
 | `<all_urls>` host access | Apply route and optional region-shield behavior to web pages. |
 
 The two content scripts run at document start in all frames. One stays in an

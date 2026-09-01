@@ -1395,13 +1395,19 @@ class TokenStore:
         req = urllib.request.Request(
             f"{self.guardian}/api/v1/fpn/token",
             headers=guardian_headers(fxa_token),
-            method="HEAD",
+            # Firefox queries the token endpoint with GET and reads the quota
+            # headers from that response. Some CDN paths accept HEAD but omit
+            # or mishandle the quota headers.
+            method="GET",
         )
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 with self._lock:
                     self.last_status = getattr(resp, "status", 200)
                 self._set_usage(resp.headers, require_quota=True)
+                # Consume and discard the ProxyPass body. The usage command
+                # must never expose or persist the short-lived token.
+                resp.read()
         except urllib.error.HTTPError as exc:
             retry_after = _retry_after_seconds(
                 exc.headers.get("Retry-After") if exc.headers else None

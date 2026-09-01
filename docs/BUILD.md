@@ -24,3 +24,9 @@ and would not be reproducible.
 Until those steps are implemented and reviewed, this repository should be used
 for source review and loading the unpacked extension only. Do not advertise it
 as a standalone VPN installer.
+
+The repair script intentionally refuses a source-only checkout. Chrome's
+Native Messaging manifest points to one executable binary; it does not provide
+an `args` field for launching `python native_host.py`. Registering `python.exe`
+with an ignored `args` field makes Chrome start Python without the host script,
+which results in a native messaging communication error.

@@ -22,22 +22,17 @@ function Stop-OldHosts([string[]]$paths){
 
 try{
  Write-Step 'Repairing Native Messaging registration...'
+ $runtimeExe=Join-Path $Root 'runtime\vpn_bridge_host.exe'
+ if(-not (Test-Path -LiteralPath $runtimeExe -PathType Leaf)){
+   throw '未找到 runtime\vpn_bridge_host.exe。公开源码不包含可直接运行的 Native Host，请先按 docs\BUILD.md 构建运行时。'
+ }
  Stop-OldHosts @(Get-RegisteredManifestPaths)
 
- $hostPath=Join-Path $Root 'host\native_host.py'
- $runtimeExe=Join-Path $Root 'runtime\vpn_bridge_host.exe'
- if(Test-Path $runtimeExe){
-   $manifestPath=Join-Path (Split-Path $runtimeExe) 'org.firefox_ip_protection.chrome_bridge.json'
-   $manifest=[ordered]@{name=$HostName;description='Firefox IP Protection Native Messaging bridge';path=$runtimeExe;type='stdio';allowed_origins=@("chrome-extension://$ExtensionId/")}
- } elseif(Test-Path $hostPath){
-   $python=(Get-Command python -ErrorAction SilentlyContinue).Source
-   if(-not $python){throw 'Python was not found. Install Python or use the complete runtime package.'}
-   $manifestPath=Join-Path $Root 'org.firefox_ip_protection.chrome_bridge.json'
-   $manifest=[ordered]@{name=$HostName;description='Firefox IP Protection Native Messaging bridge';path=$python;args=@($hostPath);type='stdio';allowed_origins=@("chrome-extension://$ExtensionId/")}
-   Write-Step 'Using source Python Native Host.'
- } else { throw 'native_host.py was not found.' }
+ $manifestPath=Join-Path (Split-Path $runtimeExe) 'org.firefox_ip_protection.chrome_bridge.json'
+ $manifest=[ordered]@{name=$HostName;description='Firefox IP Protection Native Messaging bridge';path=$runtimeExe;type='stdio';allowed_origins=@("chrome-extension://$ExtensionId/")}
 
- $manifest|ConvertTo-Json -Depth 5|Set-Content $manifestPath -Encoding UTF8
+ $json=$manifest|ConvertTo-Json -Depth 5
+ [IO.File]::WriteAllText($manifestPath,$json,(New-Object Text.UTF8Encoding($false)))
  foreach($key in @("HKCU:\Software\Google\Chrome\NativeMessagingHosts\$HostName","HKCU:\Software\Microsoft\Edge\NativeMessagingHosts\$HostName","HKCU:\Software\Chromium\NativeMessagingHosts\$HostName")){New-Item $key -Force|Out-Null;Set-Item $key $manifestPath;Write-Step "Registered: $key"}
  Write-Step "Manifest: $manifestPath"
  Write-Step 'Repair complete. Restart browser and reload extension.'

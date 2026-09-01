@@ -399,7 +399,10 @@ def _query_usage_with_ephemeral_oauth() -> int:
         }
         try:
             response = guardian_request(
-                "HEAD",
+                # Match Firefox's GuardianClient: quota is returned with the
+                # GET response from the token endpoint. HEAD is not reliable
+                # across the CDN paths used by vpn.mozilla.org.
+                "GET",
                 "/api/v1/fpn/token",
                 headers=headers,
                 label="fpn/usage",

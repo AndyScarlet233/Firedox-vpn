@@ -33,7 +33,7 @@ IP Protection 服务，并提供按域名路由、WebRTC 防泄漏、路由范�
 3. 开启“开发者模式”，选择“加载已解压的扩展”，指向仓库的 `extension/` 目录。
 4. 若本机已经安装并注册了兼容的 Native Host，扩展会使用清单中的固定扩展 ID 与它通信；否则扩展界面可以加载，但 VPN/账户导入等桥接功能会显示“本地桥接程序不可用”。
 
-本次公开仓库保留了工作包中可加载的 `extension/` 文件；仓库不携带个人机器上的 Native Host 运行时和凭据。不要把私人安装目录或 `runtime/` 复制到 Git。
+本次公开仓库保留了工作包中可加载的 `extension/` 文件；仓库不携带个人机器上的 Native Host 运行时和凭据。不要把私人安装目录或 `runtime/` 复制到 Git。`INSTALL-OR-REPAIR.cmd` 只接受已经构建好的 `runtime/vpn_bridge_host.exe`，不会把 Python 解释器伪装成 Native Host。
 
 ## 当前构建状态
 

@@ -3,6 +3,9 @@
 ## 1.0.0-public
 
 - Published a sanitized, source-first repository for the Chromium extension.
+- Fixed the quota request path to use the same GET token-endpoint flow as Firefox.
+- Prevented the repair script from registering a source-only Python interpreter as
+  a Native Messaging host; source checkouts now require a built runtime binary.
 - Kept the loadable `extension/` tree and fixed extension ID from the working
   move-safe package; added the declared `management` permission required by its
   existing self-uninstall call.

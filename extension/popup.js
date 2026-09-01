@@ -97,6 +97,7 @@ function translateUiError(message = "") {
   const known = [
     [/Specified native messaging host not found\.?/i, "未找到本地桥接程序。请运行 INSTALL-OR-REPAIR.cmd 修复本地桥接；修复后扩展目录可以移动或改名。"],
     [/Native host has exited\.?/i, "本地桥接程序已退出。请重试，或运行 INSTALL-OR-REPAIR.cmd 修复本地桥接。"],
+    [/Error when communicating with the native messaging host\.?/i, "本地桥接程序启动失败或通信协议异常。请确认已构建 runtime\\vpn_bridge_host.exe，并重新运行 INSTALL-OR-REPAIR.cmd。"],
     [/Access to the specified native messaging host is forbidden\.?/i, "Chrome 无权访问本地桥接程序。请确认扩展 ID 与安装脚本一致。"],
     [/Native bridge returned no response/i, "本地桥接程序没有返回结果。"],
     [/Native bridge timeout while running (.+)/i, (_, cmd) => `本地桥接程序执行 ${cmd} 时超时。`],

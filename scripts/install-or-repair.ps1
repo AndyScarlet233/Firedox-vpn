@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 $HostName = 'org.firefox_ip_protection.chrome_bridge'
 $ExtensionId = 'dlogjlmofifonkgbcnjalehpmkdmegnd'
 $Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-function Write-Step([string]$Message) { Write-Host "[Firedox] $Message" }
+function Write-Step([string]$Message) { Write-Host "[FirefoxVPN] $Message" }
 
 function Get-RegisteredManifestPaths {
     $keys=@("HKCU:\Software\Google\Chrome\NativeMessagingHosts\$HostName","HKCU:\Software\Microsoft\Edge\NativeMessagingHosts\$HostName","HKCU:\Software\Chromium\NativeMessagingHosts\$HostName")
@@ -24,7 +24,7 @@ try{
  Write-Step 'Repairing Native Messaging registration...'
  $runtimeExe=Join-Path $Root 'runtime\vpn_bridge_host.exe'
  if(-not (Test-Path -LiteralPath $runtimeExe -PathType Leaf)){
-   throw '未找到 runtime\vpn_bridge_host.exe。公开源码不包含可直接运行的 Native Host，请先按 docs\BUILD.md 构建运行时。'
+   throw 'runtime\vpn_bridge_host.exe was not found. Build the runtime first; see docs\BUILD.md.'
  }
  Stop-OldHosts @(Get-RegisteredManifestPaths)
 
@@ -37,4 +37,4 @@ try{
  Write-Step "Manifest: $manifestPath"
  Write-Step 'Repair complete. Restart browser and reload extension.'
  exit 0
-}catch{Write-Host "[Firedox][ERROR] $($_.Exception.Message)" -ForegroundColor Red;exit 1}
+}catch{Write-Host "[FirefoxVPN][ERROR] $($_.Exception.Message)" -ForegroundColor Red;exit 1}
